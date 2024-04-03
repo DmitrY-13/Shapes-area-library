@@ -1,3 +1,5 @@
+from typing import Collection
+
 import pytest
 
 from shapes_area import Triangle
@@ -14,24 +16,28 @@ class TestTriangle:
             ((10, 2, 11), 9.05),
         )
     )
-    def test_area_calculating(self, sides_sizes, expected_area):
+    def test_area_calculating(self, sides_sizes: tuple[int, int, int], expected_area: int | float):
         triangle_area = Triangle(*sides_sizes).area
         assert round(triangle_area, 2) == expected_area
 
-    def test_check_for_right_triangle_with_right_triangle_sides_sizes(self, right_triangle_sides_sizes):
+    def test_check_for_right_triangle_with_right_triangle_sides_sizes(
+            self, right_triangle_sides_sizes: tuple[int, int, float]
+    ):
         assert Triangle(*right_triangle_sides_sizes).is_right(self.ACCEPTABLE_ERROR)
 
-    def test_check_for_right_triangle_non_right_triangle_sides_sizes(self, non_right_triangle_sides_sizes):
+    def test_check_for_right_triangle_non_right_triangle_sides_sizes(
+            self, non_right_triangle_sides_sizes: tuple[int, float, float]
+    ):
         assert not Triangle(*non_right_triangle_sides_sizes).is_right(self.ACCEPTABLE_ERROR)
 
-    def test_impossible_triangles_sides_sizes(self, impossible_triangle_sides_sizes):
+    def test_impossible_triangles_sides_sizes(self, impossible_triangle_sides_sizes: tuple[int, int, int]):
         with pytest.raises(ValueError) as excinfo:
             Triangle(*impossible_triangle_sides_sizes)
 
         assert str(excinfo.value) == 'impossible triangle sides sizes'
 
-    def test_invalid_sides_types(self, non_right_triangle_sides_sizes):
-        def check_exception_with_invalid_sides_types(side_sizes):
+    def test_invalid_sides_types(self, non_right_triangle_sides_sizes: tuple[int, float, float]):
+        def check_exception_with_invalid_sides_types(side_sizes: Collection[int | float | str]):
             with pytest.raises(TypeError) as excinfo:
                 Triangle(*side_sizes)
 
@@ -50,7 +56,7 @@ class TestTriangle:
 
         check_exception_with_invalid_sides_types(('', '', ''))
 
-    def test_invalid_acceptable_error_type(self, non_right_triangle_sides_sizes):
+    def test_invalid_acceptable_error_type(self, non_right_triangle_sides_sizes: tuple[int, float, float]):
         with pytest.raises(TypeError) as excinfo:
             Triangle(*non_right_triangle_sides_sizes).is_right('')
 

@@ -12,7 +12,7 @@ class TestCircle:
             (25, 1963.5),
         )
     )
-    def test_area_calculating(self, radius, expected_area):
+    def test_area_calculating(self, radius: int, expected_area: float):
         circle_area = Circle(radius).area
         assert round(circle_area, 2) == expected_area
 
