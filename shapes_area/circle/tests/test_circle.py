@@ -15,3 +15,9 @@ class TestCircle:
     def test_area_calculating(self, radius, expected_area):
         circle_area = Circle(radius).area
         assert round(circle_area, 2) == expected_area
+
+    def test_invalid_radius_type(self):
+        with pytest.raises(TypeError) as excinfo:
+            Circle('')
+
+        assert str(excinfo.value) == 'radius type must be int or float'
